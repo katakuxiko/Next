@@ -1,0 +1,21 @@
+.footer {
+	display: grid;
+	padding: 25px 35px;
+	background-color: var(--primary);
+	height: 72px;
+	color: var(--white);
+	grid-template-columns: 1fr auto auto;
+	gap: 5px 40px;
+	align-content: center;
+}
+
+.footer a:hover {
+	color: var(--gray-light);
+}
+
+@media (max-width: 765px) {
+	.footer {
+		height: auto;
+		grid-template-columns: 1fr;
+	}
+}
