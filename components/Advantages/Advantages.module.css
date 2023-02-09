@@ -1,0 +1,22 @@
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable alpha-value-notation */
+/* stylelint-disable color-function-notation */
+.advantage {
+	display: grid;
+	grid-template-columns: 50px 1fr;
+	gap: 10px 40px;
+	margin-bottom: 30px;
+}
+
+.title {
+	align-self: center;
+	font-weight: bold;
+}
+
+.vline {
+	border: 1px solid var(--gray-light);
+	text-align: center;
+	justify-self: center;
+	width: 1px;
+}

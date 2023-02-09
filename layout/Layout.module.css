@@ -3,7 +3,7 @@
 	grid-auto-flow: column;
 	grid-template-columns: auto 230px minmax(320px, 1200px) auto;
 	grid-template-rows: auto 1fr auto;
-	gap: 0 30px;
+	gap: 40px 30px;
 	min-height: 100vh;
 	/* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
 	grid-template-areas:
@@ -37,11 +37,11 @@
 			"footer";
 	}
 
-	.sidebar {
-		display: none;
+	.body {
+		padding: 15px;
 	}
 
-	.body {
-		display: block;
+	.sidebar {
+		display: none !important;
 	}
 }
