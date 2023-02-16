@@ -28,13 +28,26 @@
 	position: relative;
 	border-radius:5px;
 }
-.successTitle {
+
+.errorBg{
+	margin-top: 15px;
+	background: rgb(231, 102, 102);
+	padding: 20px;
+	position: relative;
+	border-radius:5px;
+}
+
+.successTitle, .errorTitle {
 	font-weight: bold;
 }
-.close {
+.close, .errorClose {
 	position: absolute;
 	top: 20px;
 	right: 20px;
+	cursor: pointer;
+}
+.errorClose path{
+	stroke: var(--red);
 }
 
 @media screen and (max-width:1100px){

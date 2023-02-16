@@ -6,11 +6,13 @@ import cn from "classnames";
 // import { Textarea } from "../Textarea/Textarea";
 import { Button } from "../Button/Button";
 import { useForm, Controller } from "react-hook-form";
-import { IReviewForm } from "./ReviewForm.interface";
+import { IReviewForm, IReviewSentResponse } from "./ReviewForm.interface";
 import Rating from "../Rating/Rating";
 import { InputProps } from "../Input/Input.props";
 import { TextareaProps } from "../Textarea/Textarea.props";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
+import axios from 'axios';
+import { API } from '@/helpers/API';
 
 export const ReviewForm = ({
   productId,
@@ -22,10 +24,25 @@ export const ReviewForm = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IReviewForm>();
-
-  const onSubmit = (data: IReviewForm) => {
-    console.log(data);
+  const [isSuccses, setIsSuccses] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+  const onSubmit = async(formData: IReviewForm) => {
+    try {
+    const { data } = await axios.post<IReviewSentResponse>(
+      API.review.createDemo,
+      { ...formData, productId }
+    );
+      if (data.message){
+        setIsSuccses(true);
+        reset();
+      } else{
+        setError('Что-то пошло не так');
+      }
+    } catch (e) {
+        setError('Ошибка: ' + e);
+    }
   };
 
   return (
@@ -54,15 +71,15 @@ export const ReviewForm = ({
           <Controller
             control={control}
             name="rating"
-            rules={{required:{value:true,message:'Поставьте оценку'}}}
+            rules={{ required: { value: true, message: "Поставьте оценку" } }}
             render={({ field }) => (
               <>
-              <Rating
-                isEditable
-                rating={field.value}
-                setRating={field.onChange}
-                error={errors.rating}
-              />
+                <Rating
+                  isEditable
+                  rating={field.value}
+                  setRating={field.onChange}
+                  error={errors.rating}
+                />
               </>
             )}
           />
@@ -84,11 +101,19 @@ export const ReviewForm = ({
           </span>
         </div>
       </div>
-      <div className={styles.success}>
-        <div className={styles.successTitle}>Ваш отзыв отправлен</div>
-        <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
-        <CloseIcon className={styles.close} />
-      </div>
+      {isSuccses && (
+        <div className={styles.success}>
+          <div className={styles.successTitle}>Ваш отзыв отправлен</div>
+          <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
+          <CloseIcon onClick={()=> setIsSuccses(false)} className={styles.close} />
+        </div>
+      )}
+      {error && (
+        <div className={styles.errorBg}>
+          <div className={styles.errorTitle}>{error}</div>
+          <CloseIcon onClick={()=> setError(undefined)} className={styles.errorClose} />
+        </div>
+      )}
     </form>
   );
 };
