@@ -42,8 +42,8 @@ import { Textarea } from '@/components/Textarea/Textarea';
            <li key={m._id.secondCategory}>{m._id.secondCategory}</li>
          ))}
        </ul>
-       <Input placeholder='Текст'></Input>
-       <Textarea placeholder='sadasda'/>
+       {/* <Input placeholder='Текст'></Input>
+       <Textarea placeholder='sadasda'/> */}
      </>
    );
  }

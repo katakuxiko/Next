@@ -9,6 +9,7 @@ export default function Rating({
   rating,
   className,
   setRating,
+  error,
   ...props
 }: RatingProps): JSX.Element {
   const [ratingArray, setRatingArray] = useState<JSX.Element[]>(
@@ -63,10 +64,13 @@ export default function Rating({
     setRating(i);
   };
   return (
-    <div {...props}>
+    <div {...props} className={classNames(styles.ratingWrapper,{
+      [styles.error]: error
+    })} >
       {ratingArray.map((r, i) => (
         <span key={i}>{r}</span>
       ))}
+      {error && <span className={styles.errorMessage}>{error.message}</span>}
     </div>
   );
 }

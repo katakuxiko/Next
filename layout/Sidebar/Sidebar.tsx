@@ -12,12 +12,8 @@ export default function Sidebar({
 }: SidebarProps): JSX.Element {
   const router = useRouter();
   return (
-    <div
-      {...props}
-      className={classNames(className, styles.sidebar)}
-      onClick={() => router.push("/")}
-    >
-      <Logo className={styles.logo} />
+    <div {...props} className={classNames(className, styles.sidebar)}>
+      <Logo className={styles.logo} onClick={() => router.push("/")} />
       <Search />
       <Menu></Menu>
     </div>

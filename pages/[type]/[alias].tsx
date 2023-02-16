@@ -10,6 +10,7 @@ import { ParsedUrlQuery } from "querystring";
 import { ProductModel } from "@/interfaces/product.interface";
 import { firstLevelMenu } from "@/helpers/helpers";
 import { TopPageComponent } from '@/page-components/TopPageComponent/TopPageComponent';
+import { API } from '@/helpers/API';
 
 function TopPage({ firstCategory, page, products }: TopPageProps): JSX.Element {
   return <TopPageComponent firstCategory={firstCategory} page={page} products={products}/>;
@@ -21,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let paths: string[] = [];
   for (const m of firstLevelMenu) {
     const { data: menu } = await axios.post<MenuItem[]>(
-      process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
+      API.topPage.find,
       {
         firstCategory: m.id,
       }
@@ -63,7 +64,7 @@ export const getStaticProps: GetStaticProps<TopPageProps> = async ({
        }
      );
      const { data: menu } = await axios.post<MenuItem[]>(
-       process.env.NEXT_PUBLIC_DOMAIN + "/api/top-page/find",
+       API.topPage.find,
        {
          firstCategory: firstCategoryItem.id,
        }

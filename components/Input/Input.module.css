@@ -14,3 +14,7 @@
 .input ::placeholder {
 	color: var(--gray);
 }
+
+.title {
+	justify-items: start;
+}
