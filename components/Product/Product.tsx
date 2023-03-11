@@ -9,17 +9,30 @@ import { getEnvironmentData } from "worker_threads";
 import { declOfNum, priceKz } from "@/helpers/helpers";
 import { Button } from "../Button/Button";
 import { Divider } from "../Divider/Divider";
-import { useState } from "react";
-import { Review } from '../Review/Review';
-import { ReviewForm } from '../ReviewForm/ReviewForm';
-export const Product = ({
+import { ForwardedRef, forwardRef, useRef, useState } from "react";
+import { Review } from "../Review/Review";
+import { ReviewForm } from "../ReviewForm/ReviewForm";
+import {motion } from 'framer-motion'
+
+// eslint-disable-next-line react/display-name
+export const Product = motion(forwardRef(({
   product,
   className,
   ...props
-}: ProductProps): JSX.Element => {
+}: ProductProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element => {
   const [isReviewOpened, setIsReviewOpened] = useState<boolean>(false);
+  const reviewRef = useRef<HTMLDivElement>();
+
+  const scrollToReview = () => {
+    setIsReviewOpened(!isReviewOpened);
+    reviewRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  };
   return (
-    <>
+    
+    <div className={className} {...props} ref={ref}>
       <Card className={cn(styles.product, className)}>
         <div className={styles.logo}>
           <Image
@@ -53,10 +66,14 @@ export const Product = ({
         </div>
         <div className={styles.priceTitle}>Цена</div>
         <div className={styles.creditTitle}>Кредит</div>
+
         <div className={styles.rateTitle}>
-          {product.reviewCount}{" "}
-          {declOfNum(product.reviewCount, ["отзыв", "отзыва", "отзывов"])}
+          <a href="#ref" onClick={scrollToReview}>
+            {product.reviewCount}{" "}
+            {declOfNum(product.reviewCount, ["отзыв", "отзыва", "отзывов"])}{" "}
+          </a>
         </div>
+
         <Divider className={styles.hr} />
         <div className={styles.description}>{product.description}</div>
         <div className={styles.feature}>
@@ -95,21 +112,26 @@ export const Product = ({
           </Button>
         </div>
       </Card>
-      <Card
-        color="blue"
-        className={cn(styles.rewiews, {
-          [styles.opened]: isReviewOpened,
-          [styles.closed]: !isReviewOpened,
-        })}
-      >
-        {product.reviews.map((r) => (
-          <div key={r._id}>
-            <Review review={r}  />
-            <Divider/>
-          </div>
-        ))}
-        <ReviewForm productId={product._id}/>
-      </Card>
-    </>
+      <motion.div layout >
+        <Card
+          //ref={reviewRef}
+          color="blue"
+          className={cn(styles.rewiews, {
+            [styles.opened]: isReviewOpened,
+            [styles.closed]: !isReviewOpened,
+          })}
+        >
+          {product.reviews.map((r) => (
+            <div key={r._id}>
+              <Review review={r} />
+              <Divider />
+            </div>
+          ))}
+          <ReviewForm productId={product._id} />
+        </Card>
+      </motion.div>
+    </div>
   );
-};
+}
+)
+)
